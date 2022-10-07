@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+// import logo from './logo.svg';
+// import './App.css';
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import MusicCard from "./components/MusicCard";
+import data from "./data"
 
 function App() {
+  const [music, setMusic] = useState(data);
+  const musicElements = music.map(song => {
+    return <MusicCard
+      {...song}
+      key={song.id}
+    />
+  })
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar />
+      <section className="music--container">
+        {musicElements}
+      </section>
     </div>
   );
 }
