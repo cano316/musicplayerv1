@@ -17,4 +17,10 @@ export default [
         artist: "Dom Kennedy",
         coverImg: "https://upload.wikimedia.org/wikipedia/en/0/08/By_Dom_Kennedy.jpeg"
     },
+    {
+        id: 4,
+        title: "Justice",
+        artist: "Justin Bieber",
+        coverImg: "https://upload.wikimedia.org/wikipedia/en/0/08/Justin_Bieber_-_Justice.png"
+    }
 ]

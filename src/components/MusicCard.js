@@ -1,5 +1,6 @@
 import { toBePartiallyChecked } from "@testing-library/jest-dom/dist/matchers";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function MusicCard(props) {
     const [isHovered, setIsHovered] = useState(false)
@@ -22,6 +23,7 @@ export default function MusicCard(props) {
                 <h3 className="song--title">{props.title}</h3>
                 <p>{props.artist}</p>
             </div>
+            <Link to={`${props.id}`}>Details</Link>
         </div>
     )
 }
