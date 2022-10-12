@@ -22,6 +22,13 @@ function App() {
     setDarkMode(prevMode => !prevMode)
   }
 
+  function addMusic(formData) {
+    setMusic(prevMusic => {
+      return [...prevMusic, formData]
+    })
+  }
+  // console.log(music)
+
   document.body.style.backgroundColor = darkMode ? "#434555" : ""
   return (
     <div className="App">
@@ -34,7 +41,9 @@ function App() {
           darkMode={darkMode}
           music={music}
         />} />
-        <Route path='upload' element={<UploadForm />} />
+        <Route path='upload' element={<UploadForm
+          addMusic={addMusic}
+        />} />
         <Route path='about' element={<About />} />
         <Route path='contact' element={<Contact />} />
         <Route path=":userId" element={<Profile

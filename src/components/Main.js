@@ -7,7 +7,7 @@ export default function Main(props) {
     const musicElements = music.map(song => {
         return <MusicCard
             {...song}
-            key={song.id}
+            key={song.id || music.length + 1}
         />
     })
 
