@@ -1,13 +1,14 @@
 import React from "react";
 import MusicCard from "./MusicCard";
-import AddMusicButton from "./AddMusicButton";
+
 
 export default function Main(props) {
     const { music } = props;
+    // console.log(music)
     const musicElements = music.map(song => {
         return <MusicCard
             {...song}
-            key={song.id || music.length + 1}
+            key={song._id}
         />
     })
 

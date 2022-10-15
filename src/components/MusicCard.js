@@ -23,7 +23,7 @@ export default function MusicCard(props) {
                 <h3 className="song--title">{props.title}</h3>
                 <p>{props.artist}</p>
             </div>
-            <Link to={`${props.id}`}>Details</Link>
+            <Link to={`${props._id}`}>Details</Link>
         </div>
     )
 }

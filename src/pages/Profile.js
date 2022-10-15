@@ -1,11 +1,25 @@
 import { Link, useParams, useLocation } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import axios from "axios";
 import { type } from "@testing-library/user-event/dist/type";
 export default function Profile(props) {
     const { userId } = useParams();
-    // const [song, setSong] = useState()
-    const { music } = props
-    const song = music.find(s => s.id == userId);
+    const [song, setSong] = useState({
+        title: "",
+        artist: "",
+        coverImg: ""
+    })
+    useEffect(() => {
+        const fetchSong = async () => {
+            try {
+                const results = await axios.get(`http://localhost:5000/api/${userId}`)
+                setSong(results.data);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchSong()
+    }, [])
     return (
         <div>
             <div className="show-song-container">

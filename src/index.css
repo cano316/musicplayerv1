@@ -155,3 +155,21 @@ nav.dark .toggler--slider {
 .nav--links * {
     margin: 20px;
 }
+
+/* Upload Form */
+.form-container {
+    /* border: 1px solid green; */
+    width: 60%;
+    margin: 60px auto;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    margin: 60px;
+}
+
+.upload-form * {
+    margin: 10px;
+}

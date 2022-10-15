@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, redirect } from "react-router-dom"
 export default function UploadForm(props) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -27,12 +28,21 @@ export default function UploadForm(props) {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        props.addMusic(formData);
+        console.log(formData)
+        // Make a POST request to my API passing in the form data
+        const postToApi = async () => {
+            try {
+                await axios.post("http://localhost:5000/api", formData)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        postToApi();
         navigate('/');
     }
 
     return (
-        <div>
+        <div className="form-container">
             <form className="upload-form" onSubmit={handleSubmit}>
                 <input type="text" name="title" placeholder="Song Name" onChange={handleChange} value={formData.title} />
                 <input type="text" name="artist" placeholder="Artist" onChange={handleChange} value={formData.artist} />
