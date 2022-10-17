@@ -18,7 +18,7 @@ function App() {
   const [music, setMusic] = useState([]);
   const [darkMode, setDarkMode] = useState(false)
 
-  async function submittedFromChild() {
+  async function causeRefresh() {
     const apiResults = await axios.get("http://localhost:5000/api");
     setMusic(apiResults.data)
   }
@@ -63,13 +63,16 @@ function App() {
           music={music}
         />} />
         <Route path='upload' element={<UploadForm
-          submittedFromChild={submittedFromChild}
+          causeRefresh={causeRefresh}
         />} />
         <Route path='about' element={<About />} />
         <Route path='contact' element={<Contact />} />
-        <Route path=':id/update' element={< Update />} />
+        <Route path=':id/update' element={< Update
+          causeRefresh={causeRefresh}
+        />} />
         <Route path=":userId" element={<Profile
           darkMode={darkMode}
+          causeRefresh={causeRefresh}
         />} />
       </Routes>
 

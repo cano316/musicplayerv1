@@ -2,8 +2,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, useNavigate, redirect } from "react-router-dom"
 export default function UploadForm(props) {
-    // console.log(props)
     const navigate = useNavigate();
+    const { causeRefresh } = props;
     const [formData, setFormData] = useState({
         title: "",
         artist: "",
@@ -31,7 +31,7 @@ export default function UploadForm(props) {
             }
         }
         postToApi();
-        props.causeRefresh();
+        causeRefresh();
         navigate('/');
     }
 

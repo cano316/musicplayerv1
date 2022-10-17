@@ -25,6 +25,7 @@ export default function Profile(props) {
         } catch (error) {
             console.log(error)
         }
+        props.causeRefresh();
     }
     return song ? (
         <div>

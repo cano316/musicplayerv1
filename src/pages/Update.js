@@ -40,6 +40,7 @@ export default function Update(props) {
             }
         }
         postToApi();
+        props.causeRefresh();
         navigate('/');
     }
 
