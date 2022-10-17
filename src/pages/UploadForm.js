@@ -31,7 +31,7 @@ export default function UploadForm(props) {
             }
         }
         postToApi();
-        props.submittedFromChild();
+        props.causeRefresh();
         navigate('/');
     }
 
