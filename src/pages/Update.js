@@ -1,14 +1,22 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { Link, useNavigate, redirect } from "react-router-dom"
-export default function UploadForm(props) {
-    // console.log(props)
+import { useParams, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+export default function Update(props) {
     const navigate = useNavigate();
+    const { id } = useParams();
     const [formData, setFormData] = useState({
-        title: "",
-        artist: "",
-        coverImg: ""
-    })
+        title: '',
+        artist: '',
+        coverImg: ''
+    });
+
+    useEffect(() => {
+        const FindSong = async () => {
+            const foundSong = await axios.get(`http://localhost:5000/api/${id}`)
+            setFormData(foundSong.data);
+        }
+        FindSong()
+    }, [])
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -19,21 +27,22 @@ export default function UploadForm(props) {
             }
         })
     }
+
     function handleSubmit(e) {
         e.preventDefault();
-        // console.log(formData)
+        console.log(formData)
         // Make a POST request to my API passing in the form data
         const postToApi = async () => {
             try {
-                await axios.post("http://localhost:5000/api", formData);
+                await axios.patch(`http://localhost:5000/api/${id}`, formData)
             } catch (error) {
                 console.log(error)
             }
         }
         postToApi();
-        props.submittedFromChild();
         navigate('/');
     }
+
 
     return (
         <div className="form-container">
@@ -45,6 +54,5 @@ export default function UploadForm(props) {
             </form>
             <Link to="/">Home</Link>
         </div>
-
     )
 }

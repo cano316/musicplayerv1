@@ -173,3 +173,17 @@ nav.dark .toggler--slider {
 .upload-form * {
     margin: 10px;
 }
+
+/* Details page for song */
+
+.show-song-container {
+    border-radius: 10px;
+    background-color: #f1910191;
+    margin: 40px 70px;
+    display: flex;
+    padding: 20px;
+}
+
+.song-details {
+    margin-left: 20px;
+}

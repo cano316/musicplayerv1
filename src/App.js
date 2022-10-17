@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forceUpdate } from "react";
 import axios from "axios";
 import Navbar from "./components/Navbar";
 // import MusicCard from "./components/MusicCard";
@@ -9,6 +9,7 @@ import UploadForm from "./pages/UploadForm";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Update from "./pages/Update";
 import data from "./data"
 import AddMusicButton from "./components/AddMusicButton";
 import { Router, Routes, Route, Link, Switch, useParams } from "react-router-dom"
@@ -17,6 +18,10 @@ function App() {
   const [music, setMusic] = useState([]);
   const [darkMode, setDarkMode] = useState(false)
 
+  async function submittedFromChild() {
+    const apiResults = await axios.get("http://localhost:5000/api");
+    setMusic(apiResults.data)
+  }
   // API call
 
   useEffect(() => {
@@ -57,11 +62,14 @@ function App() {
           darkMode={darkMode}
           music={music}
         />} />
-        <Route path='upload' element={<UploadForm />} />
+        <Route path='upload' element={<UploadForm
+          submittedFromChild={submittedFromChild}
+        />} />
         <Route path='about' element={<About />} />
         <Route path='contact' element={<Contact />} />
+        <Route path=':id/update' element={< Update />} />
         <Route path=":userId" element={<Profile
-        // music={music}
+          darkMode={darkMode}
         />} />
       </Routes>
 

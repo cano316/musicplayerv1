@@ -1,14 +1,12 @@
-import { Link, useParams, useLocation } from "react-router-dom"
+import { Link, useParams, useLocation, redirect, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import Error from "../components/Error";
 import axios from "axios";
 import { type } from "@testing-library/user-event/dist/type";
 export default function Profile(props) {
+    const navigate = useNavigate();
     const { userId } = useParams();
-    const [song, setSong] = useState({
-        title: "",
-        artist: "",
-        coverImg: ""
-    })
+    const [song, setSong] = useState();
     useEffect(() => {
         const fetchSong = async () => {
             try {
@@ -20,15 +18,46 @@ export default function Profile(props) {
         }
         fetchSong()
     }, [])
-    return (
+    function handleDelete() {
+        try {
+            axios.delete(`http://localhost:5000/api/${userId}`)
+            navigate("/")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    return song ? (
         <div>
-            <div className="show-song-container">
+            <div className={`show-song-container ${props.darkMode ? "music-dark" : ""}`}>
                 <img src={`${song.coverImg}`} alt="" width={300} />
-                <h1>{song.title}</h1>
-                <h2>{song.artist}</h2>
+                <div className="song-details">
+                    <h1>{song.title}</h1>
+                    <h2>{song.artist}</h2>
+                </div>
+                <Link to="update">Update</Link>
+                <button onClick={handleDelete}>Delete</button>
             </div>
             <Link to="/">Home</Link>
         </div>
 
+    ) : (
+        <div className="api-error">
+            <h1>Could not find that song.</h1>
+        </div>
     )
 }
+
+
+ // return (
+    //     <div>
+    //         <div className={`show-song-container ${props.darkMode ? "music-dark" : ""}`}>
+    //             <img src={`${song.coverImg}`} alt="" width={300} />
+    //             <div className="song-details">
+    //                 <h1>{song.title}</h1>
+    //                 <h2>{song.artist}</h2>
+    //             </div>
+    //             <Link to="update">Update</Link>
+    //         </div>
+    //         <Link to="/">Home</Link>
+    //     </div>
+    // )

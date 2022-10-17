@@ -25,8 +25,13 @@ app.get("/api", async (req, res) => {
 
 app.get("/api/:id", async (req, res) => {
     const { id } = req.params;
-    const song = await Song.findById(id)
-    res.status(200).json(song);
+    try {
+        const song = await Song.findById(id)
+        res.status(200).json(song);
+    } catch (error) {
+        res.status(404).json(error)
+    }
+
 })
 
 // Post request, receiving form data and saving to DB
@@ -34,9 +39,32 @@ app.get("/api/:id", async (req, res) => {
 app.post("/api", async (req, res) => {
     const userSong = req.body;
     const newSong = new Song(userSong);
-    await newSong.save();
+    await newSong.save((err, userInput) => {
+        if (err) return res.status(400).send(err.name);
+        console.log('Saved song to database.')
+    });
 })
 
+// Update song by ID route
+// won't need a route to send form, will only need the post request route
+app.patch("/api/:id", async (req, res) => {
+    const { id } = req.params;
+    const newSong = req.body;
+    try {
+        await Song.findByIdAndUpdate(id, newSong, { runValidators: true, new: true })
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
+
+app.delete("/api/:id", async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Song.findByIdAndDelete(id)
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
 
 
 
