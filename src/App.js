@@ -27,7 +27,10 @@ function App() {
   useEffect(() => {
     console.log("fetched API data")
     const getApiData = async () => {
-      const apiResults = await axios.get("http://localhost:5000/api");
+      const apiResults = await axios.get("http://localhost:5000/api", {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
+      });
       setMusic(apiResults.data)
     }
     getApiData();

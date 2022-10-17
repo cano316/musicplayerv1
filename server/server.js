@@ -4,6 +4,9 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const Song = require('./models/song');
 const { urlencoded } = require('express');
+const session = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local')
 
 main().catch(e => console.log(e))
 async function main() {
@@ -12,12 +15,28 @@ async function main() {
 }
 
 // Allow CORS
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 // parse incoming data
 app.use(express.urlencoded({ extended: true }))
 // This is needed because axios sends post request as JSON, we need to parse it.
 app.use(express.json())
+// Session
+app.use(session({
+    secret: 'fakesecret',
+    resave: false,
+    saveUninitialized: true
+}))
+// Passport
+// app.use(passport.initialize());
+// app.use(passport.session());
 
+app.use((req, res, next) => {
+    console.log(req.session);
+    next();
+})
+
+
+// Routes
 app.get("/api", async (req, res) => {
     const allSongs = await Song.find({});
     res.status(200).json(allSongs);

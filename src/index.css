@@ -184,6 +184,15 @@ nav.dark .toggler--slider {
     padding: 20px;
 }
 
-.song-details {
-    margin-left: 20px;
+.song-card-right {
+    /* border: 1px solid green; */
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.song-links {
+    /* border: 1px solid red; */
+
 }

@@ -21,22 +21,27 @@ export default function Profile(props) {
     function handleDelete() {
         try {
             axios.delete(`http://localhost:5000/api/${userId}`)
-            navigate("/")
         } catch (error) {
             console.log(error)
         }
         props.causeRefresh();
+        navigate("/")
     }
     return song ? (
         <div>
             <div className={`show-song-container ${props.darkMode ? "music-dark" : ""}`}>
                 <img src={`${song.coverImg}`} alt="" width={300} />
-                <div className="song-details">
-                    <h1>{song.title}</h1>
-                    <h2>{song.artist}</h2>
+                <div className="song-card-right">
+                    <div className="song-details">
+                        <h1>{song.title}</h1>
+                        <h2>{song.artist}</h2>
+                    </div>
+                    <div className="song-links">
+                        <Link className="update-link" to="update">Update</Link>
+                        <button className="delete-button" onClick={handleDelete}>Delete</button>
+                    </div>
                 </div>
-                <Link to="update">Update</Link>
-                <button onClick={handleDelete}>Delete</button>
+
             </div>
             <Link to="/">Home</Link>
         </div>
