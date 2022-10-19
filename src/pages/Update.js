@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function Update(props) {
+    const { causeRefresh } = props;
     const navigate = useNavigate();
     const { id } = useParams();
     const [formData, setFormData] = useState({
@@ -30,18 +31,17 @@ export default function Update(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(formData)
         // Make a POST request to my API passing in the form data
         const postToApi = async () => {
             try {
-                await axios.patch(`http://localhost:5000/api/${id}`, formData)
+                const results = await axios.patch(`http://localhost:5000/api/${id}`, formData);
+                causeRefresh();
+                navigate(`/${results.data._id}`);
             } catch (error) {
                 console.log(error)
             }
         }
         postToApi();
-        props.causeRefresh();
-        navigate('/');
     }
 
 

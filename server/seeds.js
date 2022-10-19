@@ -1,9 +1,12 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 const Song = require('./models/song');
 
+const dbUrl = process.env.DB_URL;
+// local db "mongodb://localhost:27017/musicApp"
 main().catch(e => console.log(e))
 async function main() {
-    await mongoose.connect("mongodb://localhost:27017/musicApp");
+    await mongoose.connect(dbUrl);
     console.log("Connection Open")
 }
 
@@ -33,3 +36,4 @@ const arrOfSongs = [
 Song.insertMany(arrOfSongs)
     .then(songs => console.log(songs))
     .catch(err => console.log(err))
+

@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+require('dotenv').config();
 const cors = require('cors');
 const mongoose = require("mongoose");
 const Song = require('./models/song');
@@ -8,9 +9,10 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local')
 
+const dbURl = process.env.DB_URL || "mongodb://localhost:27017/musicApp";
 main().catch(e => console.log(e))
 async function main() {
-    await mongoose.connect("mongodb://localhost:27017/musicApp");
+    await mongoose.connect(dbURl);
     console.log("CONNECTED TO MONGODB")
 }
 
@@ -21,6 +23,8 @@ app.use(express.urlencoded({ extended: true }))
 // This is needed because axios sends post request as JSON, we need to parse it.
 app.use(express.json())
 // Session
+
+// since this is in production mode no need to set maxAge, that will be set when we store session to MongoStore
 app.use(session({
     secret: 'fakesecret',
     resave: false,
@@ -60,7 +64,7 @@ app.post("/api", async (req, res) => {
     const newSong = new Song(userSong);
     await newSong.save((err, userInput) => {
         if (err) return res.status(400).send(err.name);
-        console.log('Saved song to database.')
+        res.status(200).json(userInput);
     });
 })
 
@@ -70,7 +74,8 @@ app.patch("/api/:id", async (req, res) => {
     const { id } = req.params;
     const newSong = req.body;
     try {
-        await Song.findByIdAndUpdate(id, newSong, { runValidators: true, new: true })
+        const results = await Song.findByIdAndUpdate(id, newSong, { runValidators: true, new: true });
+        res.status(200).json(results);
     } catch (error) {
         res.status(400).json(error)
     }

@@ -25,14 +25,15 @@ export default function UploadForm(props) {
         // Make a POST request to my API passing in the form data
         const postToApi = async () => {
             try {
-                await axios.post("http://localhost:5000/api", formData);
+                const results = await axios.post("http://localhost:5000/api", formData);
+                // If song successfully posts to DB, re-route to the show page
+                navigate(`/${results.data._id}`)
             } catch (error) {
                 console.log(error)
             }
         }
         postToApi();
         causeRefresh();
-        navigate('/');
     }
 
     return (
