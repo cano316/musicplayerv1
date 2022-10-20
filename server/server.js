@@ -4,6 +4,7 @@ require('dotenv').config();
 const cors = require('cors');
 const mongoose = require("mongoose");
 const Song = require('./models/song');
+const User = require('./models/user');
 const { urlencoded } = require('express');
 const session = require('express-session');
 const passport = require('passport');
@@ -26,14 +27,24 @@ app.use(express.json())
 
 // since this is in production mode no need to set maxAge, that will be set when we store session to MongoStore
 app.use(session({
-    secret: 'fakesecret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
 }))
 // Passport
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
+
+// Middleware
 app.use((req, res, next) => {
     console.log(req.session);
     next();
@@ -90,8 +101,16 @@ app.delete("/api/:id", async (req, res) => {
     }
 })
 
-
-
+// Authentication Routes
+app.post("/register", async (req, res) => {
+    try {
+        const user = new User({ email: 'christian@gmail.com', username: 'cano', password: 'kjhewfhd87y972342' });
+        const newUser = await User.register(user, 'GoldenState');
+        res.status(200).json(newUser);
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
 
 
 
