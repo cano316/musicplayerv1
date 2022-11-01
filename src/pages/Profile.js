@@ -1,9 +1,9 @@
-import { Link, useParams, useLocation, redirect, useNavigate } from "react-router-dom"
+import { Link, useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Error from "../components/Error";
 import axios from "axios";
-import { type } from "@testing-library/user-event/dist/type";
 export default function Profile(props) {
+    const { causeRefresh } = props;
     const navigate = useNavigate();
     const { userId } = useParams();
     const [song, setSong] = useState();
@@ -17,14 +17,14 @@ export default function Profile(props) {
             }
         }
         fetchSong()
-    }, [])
+    }, [userId])
     function handleDelete() {
         try {
             axios.delete(`http://localhost:5000/api/${userId}`)
         } catch (error) {
             console.log(error)
         }
-        props.causeRefresh();
+        causeRefresh();
         navigate("/")
     }
     return song ? (

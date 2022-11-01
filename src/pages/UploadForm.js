@@ -21,7 +21,6 @@ export default function UploadForm(props) {
     }
     function handleSubmit(e) {
         e.preventDefault();
-        // console.log(formData)
         // Make a POST request to my API passing in the form data
         const postToApi = async () => {
             try {

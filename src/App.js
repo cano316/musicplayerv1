@@ -10,7 +10,8 @@ import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Update from "./pages/Update";
-import data from "./data"
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import AddMusicButton from "./components/AddMusicButton";
 import { Router, Routes, Route, Link, Switch, useParams } from "react-router-dom"
 
@@ -19,6 +20,7 @@ function App() {
   const [darkMode, setDarkMode] = useState(false)
 
   async function causeRefresh() {
+    console.log('causeRefresh called.')
     const apiResults = await axios.get("http://localhost:5000/api");
     setMusic(apiResults.data)
   }
@@ -43,15 +45,6 @@ function App() {
     setDarkMode(prevMode => !prevMode)
   }
 
-  // function addMusic(formData) {
-  //   formData.id = music.length + 1;
-  //   setMusic(prevMusic => {
-  //     return [...prevMusic, formData]
-  //   })
-  // }
-  // The above function to add music has been removed because we are using express and mongo
-
-
   // Night mode on background of web app 
   document.body.style.backgroundColor = darkMode ? "#434555" : ""
   return (
@@ -70,6 +63,8 @@ function App() {
         />} />
         <Route path='about' element={<About />} />
         <Route path='contact' element={<Contact />} />
+        <Route path='register' element={<Register />} />
+        <Route path='login' element={<Login />} />
         <Route path=':id/update' element={< Update
           causeRefresh={causeRefresh}
         />} />

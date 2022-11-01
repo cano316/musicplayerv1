@@ -17,7 +17,7 @@ export default function Update(props) {
             setFormData(foundSong.data);
         }
         FindSong()
-    }, [])
+    }, [id])
 
     function handleChange(e) {
         const { name, value } = e.target;

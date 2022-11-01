@@ -102,14 +102,20 @@ app.delete("/api/:id", async (req, res) => {
 })
 
 // Authentication Routes
-app.post("/register", async (req, res) => {
+app.post("/api/register", async (req, res) => {
+    const { email, username, password } = req.body;
     try {
-        const user = new User({ email: 'christian@gmail.com', username: 'cano', password: 'kjhewfhd87y972342' });
-        const newUser = await User.register(user, 'GoldenState');
+        const user = new User({ email, username });
+        const newUser = await User.register(user, password);
+        console.log(newUser)
         res.status(200).json(newUser);
     } catch (error) {
         res.status(400).json(error)
     }
+})
+
+app.post("/api/login", passport.authenticate('local'), async (req, res) => {
+    res.send("Successfully authenticated")
 })
 
 
