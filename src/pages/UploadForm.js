@@ -4,11 +4,24 @@ import { Link, useNavigate, redirect } from "react-router-dom"
 export default function UploadForm(props) {
     const navigate = useNavigate();
     const { causeRefresh } = props;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         artist: "",
         coverImg: ""
     })
+    useEffect(() => {
+        async function checkAuth() {
+            try {
+                const results = await axios.get("http://localhost:5000/api/auth");
+                console.log(results)
+            } catch (error) {
+                console.log(error);
+            }
+
+        }
+        checkAuth();
+    }, [])
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -35,7 +48,7 @@ export default function UploadForm(props) {
         causeRefresh();
     }
 
-    return (
+    return isLoggedIn ? (
         <div className="form-container">
             <form className="upload-form" onSubmit={handleSubmit}>
                 <input type="text" name="title" placeholder="Song Name" onChange={handleChange} value={formData.title} />
@@ -45,6 +58,7 @@ export default function UploadForm(props) {
             </form>
             <Link to="/">Home</Link>
         </div>
-
+    ) : (
+        <h1>You need to be logged in for that.</h1>
     )
 }

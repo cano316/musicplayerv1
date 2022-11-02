@@ -46,15 +46,25 @@ passport.deserializeUser(User.deserializeUser());
 
 // Middleware
 app.use((req, res, next) => {
-    console.log(req.session);
+    console.log(req.session); // show session in the node repl
     next();
+    console.log(req.user || 'couldnt find user')
 })
+
 
 
 // Routes
 app.get("/api", async (req, res) => {
     const allSongs = await Song.find({});
     res.status(200).json(allSongs);
+})
+// is the user authenticated/
+app.get("/api/auth", async (req, res) => {
+    if (!req.isAuthenticated()) {
+        res.status(400).send("Not logged in")
+    } else {
+        res.status(200).send(req.user)
+    }
 })
 
 app.get("/api/:id", async (req, res) => {
@@ -107,7 +117,7 @@ app.post("/api/register", async (req, res) => {
     try {
         const user = new User({ email, username });
         const newUser = await User.register(user, password);
-        console.log(newUser)
+        console.log(newUser) // show new user in the node repl
         res.status(200).json(newUser);
     } catch (error) {
         res.status(400).json(error)
@@ -115,7 +125,8 @@ app.post("/api/register", async (req, res) => {
 })
 
 app.post("/api/login", passport.authenticate('local'), async (req, res) => {
-    res.send("Successfully authenticated")
+    res.send("Successfully authenticated");
+    console.log(req.user)
 })
 
 
